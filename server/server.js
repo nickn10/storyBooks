@@ -1,11 +1,13 @@
 require('./config/config');
-
+const path = require('path')
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const mongoose = require('./db/mongoose');
 const passport = require('passport');
+
+const publicPath = path.join(__dirname, '../public');
 const app = express();
 
 // Mongoose Schemas
@@ -15,6 +17,7 @@ const port = process.env.PORT
 // Passport Config
 require('./config/passport')(passport);
 // Middleware Config
+app.use(express.static(publicPath));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
