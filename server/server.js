@@ -1,7 +1,7 @@
 require('./config/config');
 
 const express = require('express');
-const mongoose = require('mongoose');
+const mongoose = require('./db/mongoose');
 const passport = require('passport');
 const app = express();
 
