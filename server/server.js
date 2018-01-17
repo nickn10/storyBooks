@@ -5,6 +5,9 @@ const mongoose = require('./db/mongoose');
 const passport = require('passport');
 const app = express();
 
+// Mongoose Schemas
+const User = require('./models/User');
+
 const port = process.env.PORT
 // Passport Config
 require('./config/passport')(passport);
