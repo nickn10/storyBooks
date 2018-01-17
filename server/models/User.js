@@ -11,11 +11,17 @@ const UserSchema = new Schema({
       type: String,
       required: true
    },
-   firstName: {
-      type: String
+   displayName: {
+      type: String,
+      required: true
    },
-   lastName: {
-      type: String
+   name: {
+      first: {
+         type: String
+      },
+      last: {
+         type: String
+      }
    },
    image: {
       type: String
