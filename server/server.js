@@ -23,6 +23,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // Middleware Config
 app.use(express.static(publicPath));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
