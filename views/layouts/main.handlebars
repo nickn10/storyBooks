@@ -8,6 +8,7 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
    <link rel="stylesheet" href="/css/style.css">
    <title>StoryBook</title>
+   <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 </head>
 <body>
    {{> _header}}
@@ -28,6 +29,8 @@
    <script>
       $(document).ready(() => {
          $('.button-collapse').sideNav();
+         $('select').material_select();
+         CKEDITOR.replace('body', {plugins: 'wysiwygarea,toolbar,basicstyles,link'});
       });
    </script>
 </body>

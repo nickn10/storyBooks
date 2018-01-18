@@ -11,3 +11,7 @@ main {
 .fixed-action-btn {
    bottom: 80px;
 }
+
+.nav-wrapper .fa-bars {
+   font-size: 25px;
+}
