@@ -1,6 +1,7 @@
 const express =require('express');
 const router = express.Router();
 const passport = require('passport')
+const validateUser = require('../middleware/validate-login');
 
 router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
 
@@ -18,7 +19,7 @@ router.get('/verify', (req, res) => {
    }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', validateUser, (req, res) => {
    req.logout();
    res.redirect('/');
 });
