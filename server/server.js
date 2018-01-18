@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('./db/mongoose');
 const passport = require('passport');
 
+const globalVars = require('./middleware/global-variables');
 const publicPath = path.join(__dirname, '../public');
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(globalVars);
 // Load Routes
 const index = require('./routes/index');
 const auth = require('./routes/auth');

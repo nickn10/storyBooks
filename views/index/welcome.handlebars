@@ -1,8 +1,9 @@
-<div class="container">
-   <h1>Welcome</h1>
-   <p>Welcome to Storybooks 1.0.0</p>
-   <p>Post your life stories and choose to keep them private or share them with the world!</p>
-   <a href="/auth/google" class="btn red darken-1">
-      <i class="fa fa-google left"></i>Login in with Google
-   </a>
-</div>
+<h1>Welcome</h1>
+<p>Welcome to Storybooks 1.0.0</p>
+<p>Post your life stories and choose to keep them private or share them with the world!</p>
+{{#if user}}
+{{else}}
+<a href="/auth/google" class="btn red darken-1">
+   <i class="fa fa-google left"></i>Login in with Google
+</a>
+{{/if}}
