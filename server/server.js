@@ -13,6 +13,9 @@ const globalVars = require('./middleware/global-variables');
 const publicPath = path.join(__dirname, '../public');
 const app = express();
 
+// HANDLEBARS HELPERS
+const {truncate, stripHtml} = require('./helpers/hbsHelpers');
+
 // Mongoose Schemas
 const User = require('./models/User');
 const Story = require('./models/Story');
@@ -21,7 +24,12 @@ const port = process.env.PORT
 // Passport Config
 require('./config/passport')(passport);
 // Handlebars Config
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({
+   helpers: {
+      truncate,
+      stripHtml
+   },
+   defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // Middleware Config
 app.use(express.static(publicPath));

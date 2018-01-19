@@ -4,10 +4,10 @@ const validateUser = require('../middleware/validate-login');
 const User = require('../models/User');
 const Story = require('../models/Story');
 
-// User's Stories Index
+// Public Stories Index
 router.get('/', validateUser, async (req, res) => {
    try {
-      const stories = await Story.find({ user: req.user._id }).populate('user');
+      const stories = await Story.find({ status: 'public' }).populate('user');
       res.render('stories/index', { stories });
    } catch (e) {
       console.log(e);
