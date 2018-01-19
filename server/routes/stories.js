@@ -28,7 +28,7 @@ router.get('/edit/:id', validateUser, (req, res) => {
 // Show Single Story
 router.get('/:id', validateUser, async (req, res) => {
    try {
-      const story = await Story.findById(req.params.id)
+      const story = await Story.findById(req.params.id).populate('user');
       res.render('stories/show', {story});
    } catch (e) {
       res.redirect('/stories');

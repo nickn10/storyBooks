@@ -14,7 +14,7 @@ const publicPath = path.join(__dirname, '../public');
 const app = express();
 
 // HANDLEBARS HELPERS
-const {truncate, stripHtml} = require('./helpers/hbsHelpers');
+const {truncate, stripHtml, formatDate} = require('./helpers/hbsHelpers');
 
 // Mongoose Schemas
 const User = require('./models/User');
@@ -27,7 +27,8 @@ require('./config/passport')(passport);
 app.engine('handlebars', exphbs({
    helpers: {
       truncate,
-      stripHtml
+      stripHtml,
+      formatDate
    },
    defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');

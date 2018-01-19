@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const truncate = (str, len) => {
    if (str.length > len && str.length > 0) {
       // Create New String of Specified length
@@ -17,5 +19,9 @@ const stripHtml = (input) => {
    return input.replace(/<[^>]+>/g, '');
 }
 
-module.exports = {truncate, stripHtml};
+const formatDate = (date, format) => {
+   return moment(date).format(format);
+}
+
+module.exports = {truncate, stripHtml, formatDate};
 
