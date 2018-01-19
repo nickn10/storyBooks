@@ -15,3 +15,7 @@ main {
 .nav-wrapper .fa-bars {
    font-size: 25px;
 }
+
+.fa-ellipsis-v, .fa-times {
+   font-size: 18px;
+}

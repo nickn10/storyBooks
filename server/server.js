@@ -7,6 +7,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const mongoose = require('./db/mongoose');
 const passport = require('passport');
+const flash = require('connect-flash');
 
 const globalVars = require('./middleware/global-variables');
 const publicPath = path.join(__dirname, '../public');
@@ -14,6 +15,7 @@ const app = express();
 
 // Mongoose Schemas
 const User = require('./models/User');
+const Story = require('./models/Story');
 // PORT
 const port = process.env.PORT
 // Passport Config
@@ -26,7 +28,11 @@ app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
+app.use(session({
+   secret: 'secret',
+   resave: false,
+   saveUninitialized: false}));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(globalVars);

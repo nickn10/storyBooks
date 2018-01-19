@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const validateUser = require('../middleware/validate-login');
+const User = require('../models/User');
 const Story = require('../models/Story');
 
-// Stories Index
-router.get('/', validateUser, (req, res) => {
-   res.render('stories/index');
+// User's Stories Index
+router.get('/', validateUser, async (req, res) => {
+   try {
+      const stories = await Story.find({ user: req.user._id }).populate('user');
+      res.render('stories/index', { stories });
+   } catch (e) {
+      console.log(e);
+      res.redirect('/');
+   }
 });
 
 // Add Story Form
