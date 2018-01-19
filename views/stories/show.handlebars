@@ -1,1 +1,12 @@
-<h1>Show Story</h1>
+<div class="row">
+   {{#if story}}
+      <div class="col s8  offset-s2">
+         <div class="center-align">
+            <h3>{{story.title}}</h3>
+            <p>{{stripHtml story.body}}</p>
+         </div>
+      </div>
+   {{else}}
+      <p>Unable to find story</p>
+   {{/if}}
+</div>
