@@ -25,3 +25,19 @@ main {
 .fa-ellipsis-v, .fa-times {
    font-size: 18px;
 }
+
+.story-text {
+   height: 130px;
+}
+
+.page-title {
+   display: inline-flex;
+   display: -webkit-inline-flex;
+}
+
+.sort-dropdown {
+   margin-top: 35px;
+   margin-right: 15px;
+   display: inline-flex;
+   display: -webkit-inline-flex;
+}

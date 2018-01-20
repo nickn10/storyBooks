@@ -1,14 +1,14 @@
 <h2>Public Stories</h2>
 <div class="row">
    {{#each stories}}
-      <div class="col s12 m4">
+      <div class="col s12 m4 l3">
          <div class="card z-depth-2">
             <div class="card-content  center-align">
                <span class="card-title">{{title}}</span>
-               <p class="story-text">{{stripHtml (truncate body 300)}}</p>
-               <div class="card-action center-align">
-                  <a class="btn grey" href="/stories/{{id}}">Read More</a>
-               </div>
+               <p class="story-text">{{stripHtml (truncate body 250)}}</p>
+            </div>
+            <div class="card-action center-align">
+               <a class="btn grey" href="/stories/{{id}}">Read More</a>
             </div>
             <div class="card-action center-align">
                <a href="/stories/public/{{user.id}}">

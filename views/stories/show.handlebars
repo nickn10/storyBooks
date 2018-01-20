@@ -1,13 +1,9 @@
 <div class="row">
    {{#if story}}
       <div class="col s12  m12 l9">
-         <div class="card story">
-            <div class="card-content">
-               <h3>{{story.title}}</h3>
-               <span class="card-title">{{formatDate story.date 'MMMM Do YYYY'}}</span>
-               {{{story.body}}} <!-- Three Brackets Parses HTML content -->
-            </div>
-         </div>
+         <h3>{{story.title}}</h3>
+         <span><em>{{formatDate story.date 'MMMM Do YYYY'}}</em></span>
+            {{{story.body}}} <!-- Three Brackets Parses HTML content -->
       </div>
       <div class="col s12 m12 l3">
          <div class="card center-align">

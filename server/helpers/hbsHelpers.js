@@ -23,5 +23,13 @@ const formatDate = (date, format) => {
    return moment(date).format(format);
 }
 
-module.exports = {truncate, stripHtml, formatDate};
+const changeStatus = (status) => {
+   if(status === 'public') {
+      return 'Make Private'
+   } else {
+      return 'Make Public'
+   }
+}
+
+module.exports = {truncate, stripHtml, formatDate, changeStatus};
 
