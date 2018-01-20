@@ -45,3 +45,7 @@ main {
 .dash-status {
    text-transform: capitalize;
 }
+
+.welcome-page {
+   margin-top: 20%;
+}

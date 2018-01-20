@@ -1,8 +1,9 @@
-<h1>Welcome</h1>
-<p>Welcome to StoryBooks, where you can share your story with the world!</p>
-{{#if user}}
-{{else}}
-<a href="/auth/google" class="btn red darken-1">
-   <i class="fa fa-google left"></i>Login in with Google
-</a>
-{{/if}}
+<div class="center-align welcome-page">
+   <h1>Welcome</h1>
+   <p>Share your story with the world.</p>
+   {{#if user}} {{else}}
+   <a href="/auth/google" class="btn red darken-1">
+      <i class="fa fa-google left"></i>Login in with Google
+   </a>
+   {{/if}}
+</div>
