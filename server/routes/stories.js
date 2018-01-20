@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const validateUser = require('../middleware/validate-login');
 const User = require('../models/User');
 const Story = require('../models/Story');
+const validateUser = require('../middleware/validate-login');
 
 // Public Stories Index
-router.get('/', validateUser, async (req, res) => {
+router.get('/', async (req, res) => {
    try {
       const stories = await Story.find({ status: 'public' }).populate('user');
       res.render('stories/index', { stories });
@@ -81,6 +81,17 @@ router.post('/', validateUser, async (req, res) => {
    } catch (e) {
       res.redirect('/stories/add');
    }
-})
+});
+
+// DELETE Story
+router.delete('/:id', validateUser, async (req, res) => {
+   try {
+      await Story.findByIdAndRemove({ _id: req.params.id });
+      res.redirect('/dashboard')
+   } catch (e) {
+      console.log(e);
+      res.redirect('/dashboard')
+   }
+});
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const express =require('express');
 const router = express.Router();
 const passport = require('passport')
+
 const validateUser = require('../middleware/validate-login');
 
 router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
@@ -11,7 +12,7 @@ router.get('/google/callback',
    }
 );
 
-router.get('/verify', (req, res) => {
+router.get('/verify', validateUser, (req, res) => {
    if(req.user) {
       console.log(req.user);
    } else {

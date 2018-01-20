@@ -41,3 +41,7 @@ main {
    display: inline-flex;
    display: -webkit-inline-flex;
 }
+
+.dash-status {
+   text-transform: capitalize;
+}

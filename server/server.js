@@ -9,6 +9,8 @@ const mongoose = require('./db/mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 
+const {overrideMethod} = require('./middleware/override-method');
+const validateUser = require('./middleware/validate-login');
 const globalVars = require('./middleware/global-variables');
 const publicPath = path.join(__dirname, '../public');
 const app = express();
@@ -37,6 +39,7 @@ app.set('view engine', 'handlebars');
 app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(overrideMethod);
 app.use(cookieParser());
 app.use(session({
    secret: 'secret',
