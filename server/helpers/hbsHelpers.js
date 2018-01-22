@@ -31,5 +31,25 @@ const changeStatus = (status) => {
    }
 }
 
-module.exports = {truncate, stripHtml, formatDate, changeStatus};
+const select = function (value, options) {
+   return options.fn()
+    // splits the surrounded block at each line break (in this case each 'option' is an array item)
+      .split('\n')
+      .map(function (v) {
+         // creates string with the 'value' argument inserted  
+         var t = 'value="' + value + '"';
+         // Uses RegEx to see if the new string is found in each array item
+         // In this case if the original 'option' value matches the newly created one base on the value of the argument passed in.
+         return RegExp(t).test(v) ? v.replace(t, t + ' selected="selected"') : v;
+      })
+      .join('\n');
+}
+
+const comments = (allowComments) => {
+   if(allowComments) {
+      return 'checked'
+   }
+}
+
+module.exports = {truncate, stripHtml, formatDate, changeStatus, select, comments};
 

@@ -50,11 +50,6 @@ router.get('/add', validateUser, (req, res) => {
    res.render('stories/add');
 });
 
-// Edit Story Form
-router.get('/edit/:id', validateUser, (req, res) => {
-   res.render('stories/edit');
-});
-
 // Show Single Story
 router.get('/:id', validateUser, async (req, res) => {
    try {
@@ -64,6 +59,36 @@ router.get('/:id', validateUser, async (req, res) => {
       res.redirect('/stories');
    }
 });
+// Edit Story Form
+router.get('/edit/:id', validateUser, async (req, res) => {
+   try {
+      const story = await Story.findById(req.params.id).populate('user');
+      res.render('stories/edit', {story});
+   } catch (e) {
+      res.redirect('/stories');
+   }
+});
+// UPDATE Story
+router.put('/:id', validateUser, async (req, res) => {
+   const story = await Story.findById(req.params.id).populate('user');
+   if(story.user.id === req.user.id) {
+      try {
+         const editedStory = {
+            title: req.body.title,
+            status: req.body.status,
+            allowComments: Boolean(req.body.allowComments),
+            body: req.body.body,
+            user: req.user._id
+         }
+         await Story.findByIdAndUpdate({ _id: req.params.id}, {$set:editedStory}, {new: false});
+         res.redirect('/stories/dashboard');
+      } catch (e) {
+         res.redirect('/stories/edit/story.id');
+      }
+   } else {
+      res.redirect('/dashboard')
+   }
+})
 
 // POST New Story
 router.post('/', validateUser, async (req, res) => {
@@ -77,7 +102,7 @@ router.post('/', validateUser, async (req, res) => {
       }
       const addStory = new Story(newStory);
       await addStory.save();
-      res.redirect('/stories');
+      res.redirect('/dashboard');
    } catch (e) {
       res.redirect('/stories/add');
    }

@@ -16,8 +16,7 @@ const publicPath = path.join(__dirname, '../public');
 const app = express();
 
 // HANDLEBARS HELPERS
-const {truncate, stripHtml, formatDate, changeStatus} = require('./helpers/hbsHelpers');
-
+const hbHelpers = require('./helpers/hbsHelpers');
 // Mongoose Schemas
 const User = require('./models/User');
 const Story = require('./models/Story');
@@ -28,10 +27,12 @@ require('./config/passport')(passport);
 // Handlebars Config
 app.engine('handlebars', exphbs({
    helpers: {
-      truncate,
-      stripHtml,
-      formatDate,
-      changeStatus
+      truncate: hbHelpers.truncate,
+      stripHtml: hbHelpers.stripHtml,
+      formatDate: hbHelpers.formatDate,
+      changeStatus: hbHelpers.changeStatus,
+      select: hbHelpers.select,
+      comments: hbHelpers.comments
    },
    defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
