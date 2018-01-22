@@ -110,12 +110,15 @@ router.post('/', validateUser, async (req, res) => {
 
 // DELETE Story
 router.delete('/:id', validateUser, async (req, res) => {
-   try {
-      await Story.findByIdAndRemove({ _id: req.params.id });
-      res.redirect('/dashboard')
-   } catch (e) {
-      console.log(e);
-      res.redirect('/dashboard')
+   const story = await Story.findById(req.params.id).populate('user');
+   if(story.user.id === req.user.id) {
+      try {
+         await Story.findByIdAndRemove({ _id: req.params.id });
+         res.redirect('/dashboard')
+      } catch (e) {
+         console.log(e);
+         res.redirect('/dashboard')
+      }
    }
 });
 
