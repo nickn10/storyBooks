@@ -51,5 +51,12 @@ const comments = (allowComments) => {
    }
 }
 
-module.exports = {truncate, stripHtml, formatDate, changeStatus, select, comments};
+const isOwner = (id) => {
+  if(id === req.user.id) {
+    return true;
+  }
+  return false;
+}
+
+module.exports = {truncate, stripHtml, formatDate, changeStatus, select, comments, isOwner};
 

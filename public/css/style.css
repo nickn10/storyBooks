@@ -49,3 +49,8 @@ main {
 .welcome-page {
    margin-top: 20%;
 }
+
+.story-title {
+   display: inline-flex;
+   margin-right: 20px;
+}

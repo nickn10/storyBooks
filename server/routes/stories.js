@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const Story = require('../models/Story');
 const validateUser = require('../middleware/validate-login');
+const isStoryOwner = require('../middleware/story-owner');
 
 // Public Stories Index
 router.get('/', async (req, res) => {
@@ -51,10 +52,10 @@ router.get('/add', validateUser, (req, res) => {
 });
 
 // Show Single Story
-router.get('/:id', validateUser, async (req, res) => {
+router.get('/:id', validateUser, isStoryOwner, async (req, res) => {
    try {
       const story = await Story.findById(req.params.id).populate('user');
-      res.render('stories/show', {story});
+      res.render('stories/show', {story, owner: req.body.owner});
    } catch (e) {
       res.redirect('/stories');
    }
@@ -69,9 +70,8 @@ router.get('/edit/:id', validateUser, async (req, res) => {
    }
 });
 // UPDATE Story
-router.put('/:id', validateUser, async (req, res) => {
-   const story = await Story.findById(req.params.id).populate('user');
-   if(story.user.id === req.user.id) {
+router.put('/:id', validateUser, isStoryOwner, async (req, res) => {
+   if(req.body.owner) {
       try {
          const editedStory = {
             title: req.body.title,
@@ -109,9 +109,8 @@ router.post('/', validateUser, async (req, res) => {
 });
 
 // DELETE Story
-router.delete('/:id', validateUser, async (req, res) => {
-   const story = await Story.findById(req.params.id).populate('user');
-   if(story.user.id === req.user.id) {
+router.delete('/:id', validateUser, isStoryOwner, async (req, res) => {
+   if(req.body.owner) {
       try {
          await Story.findByIdAndRemove({ _id: req.params.id });
          res.redirect('/dashboard')

@@ -32,7 +32,8 @@ app.engine('handlebars', exphbs({
       formatDate: hbHelpers.formatDate,
       changeStatus: hbHelpers.changeStatus,
       select: hbHelpers.select,
-      comments: hbHelpers.comments
+      comments: hbHelpers.comments,
+      isOwner: hbHelpers.isOwner
    },
    defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
