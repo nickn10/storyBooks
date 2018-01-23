@@ -1,0 +1,54 @@
+<div class="row">
+   <h2 class="page-title">My Stories</h2>
+   <div class="sort-dropdown right">
+      <ul id="sort-stories" class="dropdown-content">
+         <li>
+            <a href="/stories/my-stories?sort=All">All</a>
+         </li>
+         <li>
+            <a href="/stories/my-stories?sort=Public">Public</a>
+         </li>
+         <li>
+            <a href="/stories/my-stories?sort=Private">Private</a>
+         </li>
+      </ul>
+      <a class="btn dropdown-button right" href="#!" data-activates="sort-stories">{{sort}}
+         <i class="material-icons right">arrow_drop_down</i>
+      </a>
+   </div>  
+</div>
+<div class="row">
+   {{#if stories}}
+      {{#each stories}}
+      <div class="col s12 m4 l3">
+         <div class="card z-depth-2">
+            <div class="card-content  center-align">
+               <span class="card-title activator">{{title}}<i class="material-icons right">more_vert</i></span>
+               <p class="story-text">{{stripHtml (truncate body 250)}}</p>
+            </div>
+            <div class="card-action center-align">
+               <a class="btn grey" href="/stories/{{id}}">Read</a>
+            </div>
+            <div class="card-reveal">
+               <span class="card-title">{{title}}<i class="material-icons right">close</i></span>
+               <div class="card-content center-align">
+                  <div class="card-action">
+                     <a href="/stories/edit/{{id}}" class="grey-text">Edit</a>
+                  </div>
+                  <div class="card-action">
+                     <a href="/stories/{{id}}?_method=Delete" class="grey-text">Delete</a>
+                  </div>
+                  <div class="card-action">
+                     <a href="/stories/update-status/{{id}}?_method=PUT&status={{changeStatus status}}" class="grey-text">{{changeStatus status}}</a>
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      {{/each}}
+   {{else}}
+   <p>You currently have no stories.</p>
+   {{/if}}
+
+</div>

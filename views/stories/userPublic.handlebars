@@ -1,0 +1,38 @@
+<div class="row">
+   <h3 class="page-title">{{storiesUser.displayName}}'s Public Stories</h3>
+   <div class="sort-dropdown right">
+      <ul id="sort-stories" class="dropdown-content">
+         <li>
+            <a href="/stories/public/{{storiesUser.id}}?sort=Newest">Newest</a>
+         </li>
+         <li>
+            <a href="/stories/public/{{storiesUser.id}}?sort=Oldest">Oldest</a>
+         </li>
+         <li>
+            <a href="/stories/public/{{storiesUser.id}}?sort=Views">Views</a>
+         </li>
+      </ul>
+      <a class="btn dropdown-button right" href="#!" data-activates="sort-stories">{{sort}}
+         <i class="material-icons right">arrow_drop_down</i>
+      </a>
+   </div>
+</div>
+<div class="row">
+   {{#if stories}}
+      {{#each stories}}
+      <div class="col s12 m4 l3">
+         <div class="card z-depth-2">
+            <div class="card-content  center-align">
+               <span class="card-title activator">{{title}}</span>
+               <p class="story-text">{{stripHtml (truncate body 250)}}</p>
+            </div>
+            <div class="card-action center-align">
+               <a class="btn grey" href="/stories/{{id}}">View</a>
+            </div>
+         </div>
+      </div>
+   {{else}}
+   <p>Currently no public stories.</p>
+   {{/each}}
+   {{/if}}
+</div>

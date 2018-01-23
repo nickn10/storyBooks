@@ -21,19 +21,37 @@ router.get('/', async (req, res) => {
 router.get('/my-stories', validateUser, async (req, res) => {
    try {
       let stories;
-      let sort = 'All'
+      const sort = req.query.sort || 'All';
       const myStories = await Story.find({user: req.user.id}).populate('user');
-      if(req.query.view === 'Public') {
+      if(sort === 'Public') {
          stories = myStories.filter(story => story.status === 'public');
-         sort = 'Public';
-      }else if(req.query.view === 'Private') {
+      }else if(sort === 'Private') {
          stories = myStories.filter(story => story.status !== 'public');
-         sort = 'Private';
       } else {
          stories = myStories;
       }
       stories.sort((a, b) => b.date - a.date);
-      res.render('stories/user', { stories, sort });
+      res.render('stories/my', { stories, sort });
+   } catch (e) {
+      console.log(e);
+      res.redirect('/');
+   }
+});
+
+// Users Public Stories
+router.get('/public/:userId', validateUser, async(req, res) => {
+   try {
+      let stories;
+      const sort = req.query.sort || 'Newest';
+      const publicStories = await Story.find({ user: req.params.userId, status: 'public' }).populate('user');
+      if(sort === 'Oldest') {
+         stories = publicStories.sort((a, b) => a.date - b.date);
+      } else if(sort === 'Views') {
+         stories = publicStories//.sort((a, b) => a.views - b.views);
+      } else {
+         stories = publicStories.sort((a, b) => b.date - a.date);; 
+      }
+      res.render('stories/userPublic', {stories, sort, storiesUser: stories[0].user});
    } catch (e) {
       console.log(e);
       res.redirect('/');
@@ -42,7 +60,6 @@ router.get('/my-stories', validateUser, async (req, res) => {
 
 // Add Story Form
 router.get('/add', validateUser, (req, res) => {
-   console.log(e)
    res.render('stories/add');
 });
 
@@ -58,13 +75,17 @@ router.get('/:id', validateUser, isStoryOwner, async (req, res) => {
    }
 });
 // Edit Story Form
-router.get('/edit/:id', validateUser, async (req, res) => {
-   try {
-      const story = await Story.findById(req.params.id).populate('user');
-      res.render('stories/edit', {story});
-   } catch (e) {
-      console.log(e)
-      res.redirect('/stories');
+router.get('/edit/:id', isStoryOwner, async (req, res) => {
+   if(req.body.owner) {
+      try {
+         const story = await Story.findById(req.params.id).populate('user');
+         res.render('stories/edit', {story});
+      } catch (e) {
+         console.log(e)
+         res.redirect('/stories');
+      }
+   } else {
+      res.redirect('/');
    }
 });
 // UPDATE Story
@@ -119,7 +140,7 @@ router.post('/', validateUser, async (req, res) => {
       }
       const addStory = new Story(newStory);
       await addStory.save();
-      res.redirect('/dashboard');
+      res.redirect('/stories/my-stories');
    } catch (e) {
       console.log(e);
       res.redirect('/stories/add');
@@ -131,7 +152,7 @@ router.delete('/:id', isStoryOwner, async (req, res) => {
    if(req.body.owner) {
       try {
          await Story.findByIdAndRemove({ _id: req.params.id });
-         res.redirect('/dashboard')
+         res.redirect('/stories/my-stories')
       } catch (e) {
          console.log(e);
          res.redirect('/dashboard')
