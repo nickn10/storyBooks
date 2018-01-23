@@ -9,6 +9,7 @@ const isStoryOwner = require('../middleware/story-owner');
 router.get('/', async (req, res) => {
    try {
       const stories = await Story.find({ status: 'public' }).populate('user');
+      stories.sort((a, b) => b.date - a.date);
       res.render('stories/index', { stories });
    } catch (e) {
       console.log(e);
@@ -19,32 +20,25 @@ router.get('/', async (req, res) => {
 // My Stories All
 router.get('/my-stories', validateUser, async (req, res) => {
    try {
-      const stories = await Story.find({user: req.user._id}).populate('user');
-      res.render('stories/user', { stories });
+      let stories;
+      let sort = 'All'
+      const myStories = await Story.find({user: req.user.id}).populate('user');
+      if(req.query.view === 'Public') {
+         stories = myStories.filter(story => story.status === 'public');
+         sort = 'Public';
+      }else if(req.query.view === 'Private') {
+         stories = myStories.filter(story => story.status !== 'public');
+         sort = 'Private';
+      } else {
+         stories = myStories;
+      }
+      stories.sort((a, b) => b.date - a.date);
+      res.render('stories/user', { stories, sort });
    } catch (e) {
+      console.log(e);
       res.redirect('/');
    }
-})
-// My Stories Public Only
-router.get('/my-stories/public', validateUser, async (req, res) => {
-   try {
-      const stories = await Story.find({user: req.user._id, status: 'public'}).populate('user');
-      res.render('stories/user', { stories });
-   } catch (e) {
-      res.redirect('/');
-   }
-})
-// My Stories Private Only
-router.get('/my-stories/private', validateUser, async (req, res) => {
-   try {
-      const stories = await Story.find({user: req.user._id}).populate('user');
-      const privateStories = stories.filter(story => story.status !== 'public');
-      res.render('stories/user', { stories: privateStories });
-   } catch (e) {
-      res.redirect('/');
-   }
-})
-
+});
 
 // Add Story Form
 router.get('/add', validateUser, (req, res) => {
