@@ -70,7 +70,7 @@ router.get('/edit/:id', validateUser, async (req, res) => {
    }
 });
 // UPDATE Story
-router.put('/:id', validateUser, isStoryOwner, async (req, res) => {
+router.put('/:id', isStoryOwner, async (req, res) => {
    if(req.body.owner) {
       try {
          const editedStory = {
@@ -81,12 +81,30 @@ router.put('/:id', validateUser, isStoryOwner, async (req, res) => {
             user: req.user._id
          }
          await Story.findByIdAndUpdate({ _id: req.params.id}, {$set:editedStory}, {new: false});
-         res.redirect('/stories/dashboard');
+         res.redirect('/stories/my-stories');
       } catch (e) {
          res.redirect('/stories/edit/story.id');
       }
    } else {
-      res.redirect('/dashboard')
+      res.redirect('/');
+   }
+})
+// UPDATE Status
+router.put('/update-status/:id', isStoryOwner, async(req, res) => {
+   if(req.body.owner) {
+      try {
+         if (req.query.status === 'Make Private') {
+            await Story.findByIdAndUpdate(req.params.id, { status: 'private' }, { new: false });
+         } else if(req.query.status === 'Make Public') {
+            await Story.findByIdAndUpdate(req.params.id, {status: 'public'}, { new: false});
+         }
+         res.redirect('/stories/my-stories');
+      } catch (e) {
+         console.log(e);
+         res.redirect('/stories/my-stories');
+      }
+   } else {
+      res.redirect('/')
    }
 })
 
@@ -109,7 +127,7 @@ router.post('/', validateUser, async (req, res) => {
 });
 
 // DELETE Story
-router.delete('/:id', validateUser, isStoryOwner, async (req, res) => {
+router.delete('/:id', isStoryOwner, async (req, res) => {
    if(req.body.owner) {
       try {
          await Story.findByIdAndRemove({ _id: req.params.id });
@@ -118,6 +136,8 @@ router.delete('/:id', validateUser, isStoryOwner, async (req, res) => {
          console.log(e);
          res.redirect('/dashboard')
       }
+   } else {
+      res.redirect('/');
    }
 });
 
