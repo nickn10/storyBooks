@@ -3,7 +3,8 @@
       <div class="col s12  m12 l9">
          <h3 class="story-title">{{story.title}}</h3>
          {{#if owner}}
-         <span class="right-align">
+         <span><em>{{story.status}}</em></span>
+         <span class="right user-options">
             <a href="/stories/edit/{{story.id}}">
                   <i class="material-icons grey-text">create</i>
             </a>
@@ -15,7 +16,42 @@
          <br>
          <span><em>{{formatDate story.date 'MMMM Do YYYY'}}</em></span>
             {{{story.body}}} <!-- Three Brackets Parses HTML content -->
+            <!-- ==============  Comments Section ===================== -->
+         {{#if story.allowComments}}
+            <!-- Display Comments -->
+            <div class="card">
+               <div class="card-content">
+                  <!-- Comment Input -->
+                  <div class="add-comment">
+                     {{#if user}}
+                     <form action="/stories/comment/{{story.id}}" method="post">
+                        <div class="input-field">
+                           <textarea name="commentBody" class="materialize-textarea"></textarea>
+                           <label for="commentBody">Add Comment</label>
+                        </div>
+                        <input type="submit" value="Submit" class="btn left">
+                     </form>
+                     {{else}}
+                     <p><a href="/auth/google">Login</a> and leave a comment</p>
+                     {{/if}}
+                  </div>
+                  <span class="card-title">Comments:</span>
+                  <div class="card-content comments-content">
+                     {{#each story.comments}}
+                        <p>{{commentBody}}</p>
+                        <div class="chip">
+                           <img src="{{commentUser.image}}">
+                           {{commentUser.displayName}}
+                        </div>
+                        <p class="comment-date">Posted: {{formatDate commentDate 'MMMM Do YYYY'}}</p>
+                        <br> 
+                     {{/each}}
+                  </div>
+               </div>
+            </div>             
+         {{/if}}
       </div>
+      <!-- ========================== Story Author Card ====================== -->
       <div class="col s12 m12 l3">
          <div class="card center-align">
             <div class="card-content">

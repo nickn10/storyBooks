@@ -42,15 +42,18 @@ router.get('/my-stories', validateUser, async (req, res) => {
 
 // Add Story Form
 router.get('/add', validateUser, (req, res) => {
+   console.log(e)
    res.render('stories/add');
 });
 
 // Show Single Story
 router.get('/:id', validateUser, isStoryOwner, async (req, res) => {
    try {
-      const story = await Story.findById(req.params.id).populate('user');
+      const story = await Story.findById(req.params.id).populate('user')
+                                                       .populate('comments.commentUser');
       res.render('stories/show', {story, owner: req.body.owner});
    } catch (e) {
+      console.log(e)
       res.redirect('/stories');
    }
 });
@@ -60,6 +63,7 @@ router.get('/edit/:id', validateUser, async (req, res) => {
       const story = await Story.findById(req.params.id).populate('user');
       res.render('stories/edit', {story});
    } catch (e) {
+      console.log(e)
       res.redirect('/stories');
    }
 });
@@ -77,6 +81,7 @@ router.put('/:id', isStoryOwner, async (req, res) => {
          await Story.findByIdAndUpdate({ _id: req.params.id}, {$set:editedStory}, {new: false});
          res.redirect('/stories/my-stories');
       } catch (e) {
+         console.log(e);
          res.redirect('/stories/edit/story.id');
       }
    } else {
@@ -116,6 +121,7 @@ router.post('/', validateUser, async (req, res) => {
       await addStory.save();
       res.redirect('/dashboard');
    } catch (e) {
+      console.log(e);
       res.redirect('/stories/add');
    }
 });
@@ -134,5 +140,23 @@ router.delete('/:id', isStoryOwner, async (req, res) => {
       res.redirect('/');
    }
 });
+
+router.post('/comment/:id', validateUser, async (req, res) => {
+  try {
+     if(req.body.commentBody.length > 0) {
+        const newComment = {
+           commentBody: req.body.commentBody,
+           commentUser: req.user.id
+        }
+        const story = await Story.findById(req.params.id);
+        story.comments.unshift(newComment);
+        await story.save();
+      }
+     res.redirect(`/stories/${req.params.id}`);
+  } catch (e) {
+     console.log(e)
+     res.redirect(`/stories/${story.id}`);
+  } 
+})
 
 module.exports = router;
