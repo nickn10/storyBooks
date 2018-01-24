@@ -68,7 +68,11 @@ router.get('/:id', validateUser, isStoryOwner, async (req, res) => {
    try {
       const story = await Story.findById(req.params.id).populate('user')
                                                        .populate('comments.commentUser');
-      res.render('stories/show', {story, owner: req.body.owner});
+      if(story.status !== 'public' && !req.body.owner) {
+        res.redirect('/');
+      } else {
+        res.render('stories/show', { story, owner: req.body.owner });
+      }
    } catch (e) {
       console.log(e)
       res.redirect('/stories');
